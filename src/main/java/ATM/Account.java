@@ -1,3 +1,9 @@
+package ATM;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -87,11 +93,14 @@ public class Account {
 		boolean end = false;
 		while (!end) {
 			try {
+				PrintWriter out = new PrintWriter(new FileOutputStream("/Users/elijha/Documents/GitHub/ATM-Machine-Java/src/main/java/ATM/logFile", true));
 				System.out.println("\nCurrent Checkings Account Balance: " + moneyFormat.format(checkingBalance));
 				System.out.print("\nAmount you want to withdraw from Checkings Account: ");
 				double amount = input.nextDouble();
 				if ((checkingBalance - amount) >= 0 && amount >= 0) {
 					calcCheckingWithdraw(amount);
+					out.write("\nYou widthdrew " + amount);
+					out.close();
 					System.out.println("\nCurrent Checkings Account Balance: " + moneyFormat.format(checkingBalance));
 					end = true;
 				} else {
@@ -100,6 +109,8 @@ public class Account {
 			} catch (InputMismatchException e) {
 				System.out.println("\nInvalid Choice.");
 				input.next();
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}
@@ -108,11 +119,14 @@ public class Account {
 		boolean end = false;
 		while (!end) {
 			try {
+				PrintWriter out = new PrintWriter(new FileOutputStream("/Users/elijha/Documents/GitHub/ATM-Machine-Java/src/main/java/ATM/logFile", true));
 				System.out.println("\nCurrent Savings Account Balance: " + moneyFormat.format(savingBalance));
 				System.out.print("\nAmount you want to withdraw from Savings Account: ");
 				double amount = input.nextDouble();
 				if ((savingBalance - amount) >= 0 && amount >= 0) {
 					calcSavingWithdraw(amount);
+					out.write("\nYou withdrew " + amount);
+					out.close();
 					System.out.println("\nCurrent Savings Account Balance: " + moneyFormat.format(savingBalance));
 					end = true;
 				} else {
@@ -121,6 +135,8 @@ public class Account {
 			} catch (InputMismatchException e) {
 				System.out.println("\nInvalid Choice.");
 				input.next();
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}
@@ -129,11 +145,14 @@ public class Account {
 		boolean end = false;
 		while (!end) {
 			try {
+				PrintWriter out = new PrintWriter(new FileOutputStream("/Users/elijha/Documents/GitHub/ATM-Machine-Java/src/main/java/ATM/logFile", true));
 				System.out.println("\nCurrent Checkings Account Balance: " + moneyFormat.format(checkingBalance));
 				System.out.print("\nAmount you want to deposit from Checkings Account: ");
 				double amount = input.nextDouble();
 				if ((checkingBalance + amount) >= 0 && amount >= 0) {
 					calcCheckingDeposit(amount);
+					out.write("\nYou deposited " + amount + " to checkings");
+					out.close();
 					System.out.println("\nCurrent Checkings Account Balance: " + moneyFormat.format(checkingBalance));
 					end = true;
 				} else {
@@ -142,6 +161,8 @@ public class Account {
 			} catch (InputMismatchException e) {
 				System.out.println("\nInvalid Choice.");
 				input.next();
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}
@@ -150,12 +171,15 @@ public class Account {
 		boolean end = false;
 		while (!end) {
 			try {
+				PrintWriter out = new PrintWriter(new FileOutputStream("/Users/elijha/Documents/GitHub/ATM-Machine-Java/src/main/java/ATM/logFile", true));
 				System.out.println("\nCurrent Savings Account Balance: " + moneyFormat.format(savingBalance));
 				System.out.print("\nAmount you want to deposit into your Savings Account: ");
 				double amount = input.nextDouble();
 
 				if ((savingBalance + amount) >= 0 && amount >= 0) {
 					calcSavingDeposit(amount);
+					out.write("\nYou deposited " + amount + " to savings account");
+					out.close();
 					System.out.println("\nCurrent Savings Account Balance: " + moneyFormat.format(savingBalance));
 					end = true;
 				} else {
@@ -164,6 +188,8 @@ public class Account {
 			} catch (InputMismatchException e) {
 				System.out.println("\nInvalid Choice.");
 				input.next();
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}
@@ -172,6 +198,7 @@ public class Account {
 		boolean end = false;
 		while (!end) {
 			try {
+				PrintWriter out = new PrintWriter(new FileOutputStream("/Users/elijha/Documents/GitHub/ATM-Machine-Java/src/main/java/ATM/logFile", true));
 				if (accType.equals("Checkings")) {
 					System.out.println("\nSelect an account you wish to tranfers funds to:");
 					System.out.println("1. Savings");
@@ -185,6 +212,8 @@ public class Account {
 						double amount = input.nextDouble();
 						if ((savingBalance + amount) >= 0 && (checkingBalance - amount) >= 0 && amount >= 0) {
 							calcCheckTransfer(amount);
+							out.write("\nYou transferred " + amount + " to Checkings account");
+							out.close();
 							System.out.println("\nCurrent Savings Account Balance: " + moneyFormat.format(savingBalance));
 							System.out.println(
 									"\nCurrent Checkings Account Balance: " + moneyFormat.format(checkingBalance));
@@ -212,6 +241,8 @@ public class Account {
 						double amount = input.nextDouble();
 						if ((checkingBalance + amount) >= 0 && (savingBalance - amount) >= 0 && amount >= 0) {
 							calcSavingTransfer(amount);
+							out.write("You transferred " + amount + " to savings account");
+							out.close();
 							System.out.println("\nCurrent checkings account balance: " + moneyFormat.format(checkingBalance));
 							System.out.println("\nCurrent savings account balance: " + moneyFormat.format(savingBalance));
 							end = true;
@@ -229,6 +260,8 @@ public class Account {
 			} catch (InputMismatchException e) {
 				System.out.println("\nInvalid Choice.");
 				input.next();
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}

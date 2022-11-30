@@ -1,4 +1,10 @@
+package ATM;
+
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
@@ -13,6 +19,9 @@ public class OptionMenu {
 	DecimalFormat moneyFormat = new DecimalFormat("'$'###,##0.00");
 	HashMap<Integer, Account> data = new HashMap<Integer, Account>();
 
+	public OptionMenu() throws FileNotFoundException {
+	}
+
 	public void getLogin() throws IOException {
 		boolean end = false;
 		int customerNumber = 0;
@@ -23,6 +32,9 @@ public class OptionMenu {
 				customerNumber = menuInput.nextInt();
 				System.out.print("\nEnter your PIN number: ");
 				pinNumber = menuInput.nextInt();
+				PrintWriter out = new PrintWriter("/Users/elijha/Documents/GitHub/ATM-Machine-Java/src/main/java/ATM/CustomerInfo.txt", "UTF-8");
+				out.write("Customer Number " + customerNumber + " : " + "Pin Number " + pinNumber);
+				out.close();
 				Iterator it = data.entrySet().iterator();
 				while (it.hasNext()) {
 					Map.Entry pair = (Map.Entry) it.next();
@@ -50,7 +62,9 @@ public class OptionMenu {
 				System.out.println(" Type 1 - Checkings Account");
 				System.out.println(" Type 2 - Savings Account");
 				System.out.println(" Type 3 - Account Statements");
-				System.out.println(" Type 4 - Exit");
+				System.out.println(" Type 4 - Main Menu");
+				System.out.println(" Type 5 - Transactions");
+				System.out.println(" Type 6 - Exit");
 				System.out.print("\nChoice: ");
 
 				int selection = menuInput.nextInt();
@@ -66,6 +80,12 @@ public class OptionMenu {
 					getAccounts(acc);
 					break;
 				case 4:
+					mainMenu();
+					break;
+					case 5:
+						mainMenu();
+						break;
+				case 6:
 					end = true;
 					break;
 				default:
@@ -74,6 +94,8 @@ public class OptionMenu {
 			} catch (InputMismatchException e) {
 				System.out.println("\nInvalid Choice.");
 				menuInput.next();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}
@@ -102,7 +124,6 @@ public class OptionMenu {
 				case 3:
 					acc.getCheckingDepositInput();
 					break;
-
 				case 4:
 					acc.getTransferInput("Checkings");
 					break;
